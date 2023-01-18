@@ -8,8 +8,6 @@
   const tareasCompletadas = ref(0);
   const tareasTotales = ref(0);
 
-  var campoFiltro = ref('');
-
   var recordatorios = ref([]);
 
   // carga los datos del local storage si existen
@@ -62,11 +60,6 @@
     });
     guardarDatos();
   }
-  // Filtrar las notas por palabras
-  function filtrarContenido(){
-    let miArrayFiltrado =  recordatorios.value.filter( (nota)=> nota.titulo.toLowerCase().includes(campoFiltro.value.toLowerCase()));
-    return prioridad(miArrayFiltrado);
-  }
   // Guardar en el locla storage
   function guardarDatos(){
     localStorage.setItem('recordatorios', JSON.stringify(recordatorios.value));
@@ -77,7 +70,7 @@
 <template>
   <cabecera @titulonota="introducirnotas"></cabecera>
   <hr>
-  <p><i class="fa-solid fa-chart-column"></i> <span id="tareas-pendientes">{{ tareasCompletadas }}</span> Tareas pendientes de un total de <span id="tareas-totales">{{ tareasTotales }}</span> | <a id="borrarTodo" @click="borrarCompletadas"><i class="fa-solid fa-xmark"></i> Borrar tareas completadas</a><input type="text" id="filtro" placeholder="Filtra por palabras" v-model="campoFiltro" @keyup="filtrarContenido"></p>
+  <p><i class="fa-solid fa-chart-column"></i> <span id="tareas-pendientes">{{ tareasCompletadas }}</span> Tareas pendientes de un total de <span id="tareas-totales">{{ tareasTotales }}</span> | <a id="borrarTodo" @click="borrarCompletadas"><i class="fa-solid fa-xmark"></i> Borrar tareas completadas</a></p>
   <hr>
   <div id="tareas" >
     <contenido id="tarea" v-for="recordatorio in recordatorios" @cambiarPrioridad="prioridad" @restarPendiente="restarPendiente" @borrarTareasCompletadas="borrarCompletadas" @borrarNota="borrarNota(recordatorio)" :recordatorio="recordatorio" :key="recordatorio.codigoNota">
